@@ -1,0 +1,170 @@
+package org.example.demo.database;
+
+import org.example.demo.business.*;
+import oracle.jdbc.OraclePreparedStatement;
+import oracle.jdbc.OracleTypes;
+
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+public class StationMeteoDAO {
+
+    private final PaysDAO  paysDAO = new PaysDAO();
+    private final MeteoDAO meteoDAO = new MeteoDAO();
+    private Connection con;
+    private OraclePreparedStatement pstmt;
+    private ResultSet rs;
+
+    Random rand = new Random();
+
+    public Integer createStationMeteo(StationMeteo stationMeteo) {
+        Integer id = null;
+        try {
+            con = DatabaseManager.getConnection();
+            if (stationMeteo.getOpenWeatherMapId() == 0) {
+                int owmId = 10000 + rand.nextInt(10001);
+                while (checkOwmId(owmId)) {
+                    owmId = 10000 + rand.nextInt(10001);
+                }
+                stationMeteo.setOpenWeatherMapId(owmId);
+            }
+            String SELECT_SQL = "select * from STATIONMETEOS where OWM_ID = ?";
+            pstmt = (OraclePreparedStatement) con.prepareStatement(SELECT_SQL);
+            pstmt.setInt(1,stationMeteo.getOpenWeatherMapId());
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                System.out.println("Station Meteo existante");
+                id = rs.getInt(1);
+                return id;
+            }
+            rs.close();
+            pstmt.close();
+
+            con.setAutoCommit(false);
+            pstmt = (OraclePreparedStatement) con.prepareStatement("INSERT INTO StationMeteos (pay_situer_num, owm_id, latitude, longitude, nom) VALUES (?, ?, ?, ?, ?) RETURNING NUM INTO ?");
+
+            if (stationMeteo.getPays() != null) {
+                pstmt.setInt(1, stationMeteo.getPays().getNumero());
+            } else {
+                pstmt.setNull(1, OracleTypes.NULL);
+            }
+            pstmt.setDouble(2, stationMeteo.getOpenWeatherMapId());
+            pstmt.setDouble(3, stationMeteo.getLatitude());
+            pstmt.setDouble(4, stationMeteo.getLongitude());
+            pstmt.setString(5, stationMeteo.getNom());
+
+            pstmt.registerReturnParameter(6, OracleTypes.NUMBER);
+
+            pstmt.executeUpdate();
+            con.commit();
+
+            rs = pstmt.getReturnResultSet();
+            if (rs.next()) {
+                id = rs.getInt(1);
+            }
+            rs.close();
+            con.close();
+            pstmt.close();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return id;
+    }
+
+    private boolean checkOwmId(int number){
+        try {
+            con = DatabaseManager.getConnection();
+            pstmt = (OraclePreparedStatement) con.prepareStatement("SELECT OWM_ID FROM STATIONMETEOS where OWM_ID = ?");
+            pstmt.setInt(1, number);
+            rs = pstmt.executeQuery();
+            return rs.next();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public StationMeteo getStationByLCoords(double lat, double lon){
+        StationMeteo stationMeteo;
+        try {
+            con = DatabaseManager.getConnection();
+            pstmt = (OraclePreparedStatement) con.prepareStatement("SELECT * FROM STATIONMETEOS WHERE LATITUDE= ? AND LONGITUDE= ?");
+            pstmt.setDouble(1, lat);
+            pstmt.setDouble(2, lon);
+            stationMeteo = getStationMeteo(con, pstmt);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return stationMeteo;
+    }
+    public StationMeteo getStationMeteoByName(String stationName){
+        StationMeteo stationMeteo;
+        try {
+            con = DatabaseManager.getConnection();
+            pstmt = (OraclePreparedStatement) con.prepareStatement("SELECT * FROM STATIONMETEOS WHERE upper(NOM) = ?");
+            pstmt.setString(1, stationName.trim().toUpperCase());
+            stationMeteo = getStationMeteo(con, pstmt);
+            rs.close();
+            con.close();
+            pstmt.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return stationMeteo;
+    }
+
+    private StationMeteo getStationMeteo(Connection con, OraclePreparedStatement pstmt) throws SQLException {
+        rs = pstmt.executeQuery();
+        StationMeteo stationMeteo = null;
+        while (rs.next()) {
+            stationMeteo = new StationMeteo(
+                    rs.getInt("NUM"),
+                    rs.getDouble("LATITUDE"),
+                    rs.getDouble("LONGITUDE"),
+                    rs.getString("NOM"),
+                    paysDAO.findByNum(rs.getInt("pay_situer_num")),
+                    rs.getInt("OWM_ID"),
+                    meteoDAO.findByStationNum(rs.getInt("NUM"))
+            );
+        }
+        rs.close();
+        con.close();
+        pstmt.close();
+        return stationMeteo;
+    }
+
+    public List<StationMeteo> getAllStationMeteo(){
+        List<StationMeteo> stationMeteoList = new ArrayList<StationMeteo>();
+        try {
+            con = DatabaseManager.getConnection();
+            pstmt = (OraclePreparedStatement) con.prepareStatement("SELECT * FROM STATIONMETEOS");
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                StationMeteo stationMeteo = new StationMeteo(
+                        rs.getInt("NUM"),
+                        rs.getDouble("LATITUDE"),
+                        rs.getDouble("LONGITUDE"),
+                        rs.getString("NOM"),
+                        paysDAO.findByNum(rs.getInt("pay_situer_num")),
+                        rs.getInt("OWM_ID"),
+                        meteoDAO.findByStationNum(rs.getInt("NUM"))
+                );
+                stationMeteoList.add(stationMeteo);
+            }
+            rs.close();
+            con.close();
+            pstmt.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return stationMeteoList;
+    }
+
+
+}
+
+
