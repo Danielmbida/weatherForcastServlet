@@ -67,6 +67,20 @@
             <version>21.5.0.0</version>
         </dependency>
 
+        <!-- WebJar pour Bootstrap -->
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>bootstrap</artifactId>
+            <version>5.2.3</version>
+        </dependency>
+
+        <!-- (Optionnel) WebJar pour jQuery, si nécessaire -->
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>jquery</artifactId>
+            <version>3.6.0</version>
+        </dependency>
+
 
     </dependencies>
 
