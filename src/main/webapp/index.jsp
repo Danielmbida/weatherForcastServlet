@@ -8,28 +8,30 @@
     <title>JSP - Hello World</title>
 </head>
 <body>
-<h1><%= "Hello World!" %>
-</h1>
+<h1><%= "Liste des stations" %></h1>
 <br/>
-<a href="hello-servlet">Hello Servlet</a>
-
 <%
     StationMeteoDAO stationMeteoDAO = new StationMeteoDAO();
     List<StationMeteo> stationMeteoList = stationMeteoDAO.getAllStationMeteo();
 %>
-<h2><%= "Liste des stations" %></h2>
 <table border="1">
-    <th>id</th>
-    <th>latitude</th>
-    <th>longitude</th>
+    <th>Nom de la station</th>
+    <th>Pays</th>
+    <th>Latitude</th>
+    <th>Longitude</th>
+    <th>action</th>
 
     <% for (StationMeteo station : stationMeteoList) { %>
+
     <tr>
-        <td><%= station.getOpenWeatherMapId() %></td>
+       <td><%= station.getNom() %></td>
+        <td><%= station.getPays().getNom() %></td>
         <td><%= station.getLatitude() %></td>
         <td><%= station.getLongitude() %></td>
+        <td><a href="station-details?name=<%= station.getNom() %>">detail</a></td>
     </tr>
     <% } %>
 </table>
+<button>Ajouter une station</button>
 </body>
 </html>

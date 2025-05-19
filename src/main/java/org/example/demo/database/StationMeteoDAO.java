@@ -25,13 +25,13 @@ public class StationMeteoDAO {
         Integer id = null;
         try {
             con = DatabaseManager.getConnection();
-            if (stationMeteo.getOpenWeatherMapId() == 0) {
-                int owmId = 10000 + rand.nextInt(10001);
-                while (checkOwmId(owmId)) {
-                    owmId = 10000 + rand.nextInt(10001);
-                }
-                stationMeteo.setOpenWeatherMapId(owmId);
-            }
+//            if (stationMeteo.getOpenWeatherMapId() == 0) {
+//                int owmId = 10000 + rand.nextInt(10001);
+//                while (checkOwmId(owmId)) {
+//                    owmId = 10000 + rand.nextInt(10001);
+//                }
+//                stationMeteo.setOpenWeatherMapId(owmId);
+//            }
             String SELECT_SQL = "select * from STATIONMETEOS where OWM_ID = ?";
             pstmt = (OraclePreparedStatement) con.prepareStatement(SELECT_SQL);
             pstmt.setInt(1,stationMeteo.getOpenWeatherMapId());
