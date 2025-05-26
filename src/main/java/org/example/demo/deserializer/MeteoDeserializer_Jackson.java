@@ -1,6 +1,5 @@
 package org.example.demo.deserializer;
 
-
 import org.example.demo.business.*;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -10,20 +9,48 @@ import com.fasterxml.jackson.databind.JsonNode;
 import java.io.IOException;
 import java.util.Date;
 
-
 public class MeteoDeserializer_Jackson extends JsonDeserializer<Meteo> {
     @Override
     public Meteo deserialize(JsonParser jsonParser, DeserializationContext deserializationContext)
             throws IOException {
         JsonNode node = jsonParser.getCodec().readTree(jsonParser);
-        int numero = node.get("id").asInt();
-        Date dateMesure = new Date(node.get("dt").asLong() * 1000);  // Convertir timestamp en Date
+
+
+        int numero;
+        if (node.has("id")) {
+            numero = node.get("id").asInt();
+        } else {
+            numero = node.get("dt").asInt();
+        }
+
+        Date dateMesure = new Date(node.get("dt").asLong() * 1000);
         double temperature = node.get("main").get("temp").asDouble();
         String description = node.get("weather").get(0).get("description").asText();
         int pression = node.get("main").get("pressure").asInt();
         double humidite = node.get("main").get("humidity").asDouble();
-        int visibilite = node.get("visibility").asInt();
-        double precipitation = node.has("rain") ? node.get("rain").has("1h") ? node.get("rain").get("1h").asDouble() : 0.0 : 0.0;
+
+
+        int visibilite = node.has("visibility") ? node.get("visibility").asInt() : 10000;
+
+
+        double precipitation = 0.0;
+
+        if (node.has("rain")) {
+            JsonNode rainNode = node.get("rain");
+            if (rainNode.has("1h")) {
+                precipitation = rainNode.get("1h").asDouble();
+            } else if (rainNode.has("3h")) {
+                precipitation = rainNode.get("3h").asDouble();
+            }
+        } else if (node.has("snow")) {
+            JsonNode snowNode = node.get("snow");
+            if (snowNode.has("1h")) {
+                precipitation = snowNode.get("1h").asDouble();
+            } else if (snowNode.has("3h")) {
+                precipitation = snowNode.get("3h").asDouble();
+            }
+        }
+
         return new Meteo(numero, dateMesure, temperature, description, pression, humidite, visibilite, precipitation);
     }
 }

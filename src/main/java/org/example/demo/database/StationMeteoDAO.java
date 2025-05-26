@@ -164,7 +164,40 @@ public class StationMeteoDAO {
         return stationMeteoList;
     }
 
+    /**
+     * Met à jour les données météo d'une station avec une nouvelle mesure
+     * @param station La station à mettre à jour
+     * @param newMeteo Les nouvelles données météo
+     */
+    public void updateStationMeteo(StationMeteo station, Meteo newMeteo) {
+        try {
+            java.util.Map<java.util.Date, Meteo> tempDonnees = new java.util.HashMap<>();
+            tempDonnees.put(newMeteo.getDateMesure(), newMeteo);
 
+            StationMeteo tempStation = new StationMeteo(
+                    station.getNumero(),
+                    station.getLatitude(),
+                    station.getLongitude(),
+                    station.getNom(),
+                    station.getPays(),
+                    station.getOpenWeatherMapId(),
+                    tempDonnees
+            );
+
+            int result = meteoDAO.save(tempStation);
+
+            if (result > 0) {
+                station.getDonneesMeteo().put(newMeteo.getDateMesure(), newMeteo);
+                System.out.println("Données météo mises à jour pour la station: " + station.getNom());
+            } else {
+                System.out.println("Aucune nouvelle donnée ajoutée (déjà existante) pour: " + station.getNom());
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Erreur lors de la mise à jour des données météo pour " + station.getNom() + ": " + e.getMessage(), e);
+        }
+    }
 }
 
 
