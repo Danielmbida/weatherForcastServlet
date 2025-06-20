@@ -25,8 +25,18 @@
     StationMeteoDAO dao = new StationMeteoDAO();
     List<StationMeteo> stationMeteoList = dao.getAllStationMeteo();
 %>
-<div class="container">
-    <h1><%= "Liste des stations" %></h1>
+<div class="container mt-5">
+    <div class="row mb-3">
+        <div class="col text-start">
+            <h1><%= "Liste des stations" %></h1>
+        </div>
+        <div class="col text-end">
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addStationModal">
+                Ajouter une station
+            </button>
+        </div>
+    </div>
+
 
     <div class="row">
         <table class="table table-striped table-bordered">
@@ -55,9 +65,21 @@
 
     <div class="row mt-3">
         <div class="col text-end">
-            <button class="btn btn-primary"  data-bs-toggle="modal" data-bs-target="#addStationModal">Ajouter une station</button>
+            <div class="d-inline-block me-2">
+                <form method="post" action="hot-stations" class="d-inline">
+                    <button type="submit" class="btn btn-warning">Voir les lieux les plus chauds</button>
+                </form>
+            </div>
+            <div class="d-inline-block">
+                <form method="post" action="cold-stations" class="d-inline">
+                <button type="submit" class="btn btn-success">
+                    Voir les lieux les plus froid
+                </button>
+                </form>
+            </div>
         </div>
     </div>
+
 </div>
 <jsp:include page="addStationModal.jsp" />
 </body>
