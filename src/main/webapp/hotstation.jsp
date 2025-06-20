@@ -15,7 +15,7 @@
 </div>
 <% }%>
 <div class="container mt-5">
-  <h1> Top 3 des lieux les plus chauds</h1>
+  <h1>🌡️ Top 3 des lieux les plus chauds</h1>
 
   <table class="table table-bordered table-striped mt-4">
     <thead>
@@ -67,7 +67,7 @@
       <form method="post" action="refresh-all-stations">
         <input type="hidden" name="redirectTo" value="<%= "hot-stations" %>" />
         <button type="submit" class="btn btn-outline-primary">
-          Rafraîchir toutes les stations
+          🔄 Rafraîchir toutes les stations
         </button>
       </form>
     </div>

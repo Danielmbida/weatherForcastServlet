@@ -67,7 +67,7 @@
             <form method="post" action="refresh-all-stations">
                 <input type="hidden" name="redirectTo" value="<%= "cold-stations" %>" />
                 <button type="submit" class="btn btn-outline-primary">
-                    Rafraîchir toutes les stations
+                    🔄 Rafraîchir toutes les stations
                 </button>
             </form>
         </div>
