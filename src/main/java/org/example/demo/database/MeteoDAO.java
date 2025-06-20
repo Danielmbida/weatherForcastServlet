@@ -78,7 +78,7 @@ public class MeteoDAO {
 
         try {
             con = DatabaseManager.getConnection();
-            pstmt = (OraclePreparedStatement) con.prepareStatement("SELECT * FROM Meteos WHERE sta_avoir_num = ?");
+            pstmt = (OraclePreparedStatement) con.prepareStatement("SELECT * FROM Meteos WHERE sta_avoir_num = ? ORDER BY DATEMESURE desc ");
             pstmt.setInt(1, stationNum);
             rs = pstmt.executeQuery();
             while (rs.next()) {

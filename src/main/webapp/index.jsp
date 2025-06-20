@@ -5,11 +5,22 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>JSP - Hello World</title>
+    <title>JSP - Meteo</title>
     <link rel="stylesheet"
           href="<%= request.getContextPath() %>/webjars/bootstrap/5.2.3/css/bootstrap.min.css"/>
 </head>
 <body>
+<% if (request.getAttribute("error") != null) { %>
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <%= request.getAttribute("error") %>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
+</div>
+<% } else if (request.getAttribute("success") != null) { %>
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+    <%= request.getAttribute("success") %>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
+</div>
+<% } %>
 <%
     StationMeteoDAO dao = new StationMeteoDAO();
     List<StationMeteo> stationMeteoList = dao.getAllStationMeteo();
