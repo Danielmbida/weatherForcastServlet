@@ -164,6 +164,96 @@ public class StationMeteoDAO {
         return stationMeteoList;
     }
 
+    public List<StationMeteo> getTop3StationsPlusChaudes() {
+        List<StationMeteo> stationMeteoList = new ArrayList<>();
+
+        String sql = """
+        SELECT s.NUM, s.LATITUDE, s.LONGITUDE, s.NOM, s.PAY_SITUER_NUM, s.OWM_ID
+        FROM STATIONMETEOS s
+        JOIN (
+            SELECT sta_avoir_num, MAX(DATEMESURE) AS last_date
+            FROM METEOS
+            GROUP BY sta_avoir_num
+        ) latest ON s.NUM = latest.sta_avoir_num
+        JOIN METEOS m ON m.sta_avoir_num = latest.sta_avoir_num AND m.DATEMESURE = latest.last_date
+        ORDER BY m.TEMPERATURE DESC
+        FETCH FIRST 3 ROWS ONLY
+    """;
+
+        try {
+            con = DatabaseManager.getConnection();
+            pstmt = (OraclePreparedStatement) con.prepareStatement(sql);
+            rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                int stationNum = rs.getInt("NUM");
+                StationMeteo station = new StationMeteo(
+                        stationNum,
+                        rs.getDouble("LATITUDE"),
+                        rs.getDouble("LONGITUDE"),
+                        rs.getString("NOM"),
+                        paysDAO.findByNum(rs.getInt("PAY_SITUER_NUM")),
+                        rs.getInt("OWM_ID"),
+                        meteoDAO.findByStationNum(stationNum) // ⚠️ récupère TOUTES les données météo ici
+                );
+                stationMeteoList.add(station);
+            }
+
+            rs.close();
+            pstmt.close();
+            con.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return stationMeteoList;
+    }
+
+    public List<StationMeteo> getTop3StationsPlusFroide() {
+        List<StationMeteo> stationMeteoList = new ArrayList<>();
+
+        String sql = """
+        SELECT s.NUM, s.LATITUDE, s.LONGITUDE, s.NOM, s.PAY_SITUER_NUM, s.OWM_ID
+        FROM STATIONMETEOS s
+        JOIN (
+            SELECT sta_avoir_num, MAX(DATEMESURE) AS last_date
+            FROM METEOS
+            GROUP BY sta_avoir_num
+        ) latest ON s.NUM = latest.sta_avoir_num
+        JOIN METEOS m ON m.sta_avoir_num = latest.sta_avoir_num AND m.DATEMESURE = latest.last_date
+        ORDER BY m.TEMPERATURE ASC
+        FETCH FIRST 3 ROWS ONLY
+    """;
+
+        try {
+            con = DatabaseManager.getConnection();
+            pstmt = (OraclePreparedStatement) con.prepareStatement(sql);
+            rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                int stationNum = rs.getInt("NUM");
+                StationMeteo station = new StationMeteo(
+                        stationNum,
+                        rs.getDouble("LATITUDE"),
+                        rs.getDouble("LONGITUDE"),
+                        rs.getString("NOM"),
+                        paysDAO.findByNum(rs.getInt("PAY_SITUER_NUM")),
+                        rs.getInt("OWM_ID"),
+                        meteoDAO.findByStationNum(stationNum) // ⚠️ récupère TOUTES les données météo ici
+                );
+                stationMeteoList.add(station);
+            }
+
+            rs.close();
+            pstmt.close();
+            con.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return stationMeteoList;
+    }
+
     /**
      * Met à jour les données météo d'une station avec une nouvelle mesure
      * @param station La station à mettre à jour
