@@ -6,6 +6,7 @@
 <%@ page import="java.util.Date" %>
 <%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="java.text.DecimalFormat" %>
+<%@ page import="java.util.ArrayList" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%
@@ -311,7 +312,12 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <% for (Map.Entry<Date, Meteo> entry : station.getDonneesMeteo().entrySet()) { %>
+                    <%
+                        Map<Date, Meteo> donnees = station.getDonneesMeteo();
+                        List<Map.Entry<Date, Meteo>> donneesTriees = new ArrayList<>(donnees.entrySet());
+                        donneesTriees.sort((e1, e2) -> e2.getKey().compareTo(e1.getKey())); // tri décroissant
+                        for (Map.Entry<Date, Meteo> entry : donneesTriees) {
+                    %>
                     <tr>
                         <td><%= dateFormat.format(entry.getKey()) %></td>
                         <td><%= decimalFormat.format(entry.getValue().getTemperature()) %>°C</td>
@@ -320,6 +326,7 @@
                         <td><%= entry.getValue().getPression() %> hPa</td>
                     </tr>
                     <% } %>
+
                     </tbody>
                 </table>
             </div>
