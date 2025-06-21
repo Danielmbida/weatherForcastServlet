@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stations les plus froides - WeatherStation Pro</title>$
+    <title>Stations les plus froides - WeatherStation Pro</title>
 
     <!-- Bootswatch MINTY Theme -->
     <link href="https://cdn.jsdelivr.net/npm/bootswatch@5.3.2/dist/minty/bootstrap.min.css" rel="stylesheet">
