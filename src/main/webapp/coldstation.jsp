@@ -12,7 +12,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootswatch@5.3.2/dist/minty/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
 
-    <%@ include file="stylesheet/coldStation.css" %>
+    <link rel="stylesheet" href="stylesheet/coldStation.css">
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow">
