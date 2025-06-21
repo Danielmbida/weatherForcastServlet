@@ -14,52 +14,50 @@ public class StationMeteoService  implements IStationMeteoService{
     private final PaysDAO paysDAO = new PaysDAO();
 
     @Override
-    public StationMeteo getStationMeteoByCoords(double lat, double lon) throws IOException, InterruptedException {
-        StationMeteo stationMeteo;
-        if(stationMeteoDAO.getStationByLCoords(lat, lon) == null) {
-            try {
-                addStationMeteoToDB(ApiClass.fetchStation(lat, lon));
-            }catch (Exception e) {
-                System.out.println(e.getMessage());
-            }
-
-        }
-        stationMeteo = stationMeteoDAO.getStationByLCoords(lat, lon);
-        return stationMeteo;
+    public StationMeteo getStationMeteoByCoords(double lat, double lon) {
+         return stationMeteoDAO.getStationByLCoords(lat, lon);
     }
-
-    private void addStationMeteoToDB(StationMeteo stationMeteo) throws Exception {
+    @Override
+    public StationMeteo addStationMeteoToDB(double lat, double lon) throws Exception {
+        StationMeteo stationMeteo = ApiClass.fetchStation(lat, lon);
         if(stationMeteo.getOpenWeatherMapId() != 0){
             saveAll(stationMeteo);
         }else{
-            throw new Exception("Impossible d'ajouter une station sans ID openWeather");
-        }
-    }
-
-    @Override
-    public List<StationMeteo> getAllStationInDB(){
-        return stationMeteoDAO.getAllStationMeteo();
-    }
-
-    @Override
-    public StationMeteo getStationMeteoByNameFromDB(String name) {
-        StationMeteo stationMeteo;
-        stationMeteo = stationMeteoDAO.getStationMeteoByName(name);
-        if(stationMeteo == null) {
-           throw new NullPointerException("Aucune station n'existe avec le nom: "+name);
+            stationMeteo = null;
         }
         return stationMeteo;
     }
 
-//    @Override
-//    public List<Meteo> refreshMeteoAllStations() throws Exception {
-//        return meteoDAO.refreshDataMeteo();
-//    }
+    @Override
+    public List<StationMeteo> getTop3StationsPlusFroide() {
+        return stationMeteoDAO.getTop3StationsPlusFroide();
+    }
 
-//    @Override
-//    public Meteo refreshMeteoOneStation(StationMeteo stationMeteo) throws Exception {
-//        return meteoDAO.refreshOneStationMeteo(stationMeteo);
-//    }
+    @Override
+    public List<StationMeteo> getTop3StationsPlusChaudes() {
+        return stationMeteoDAO.getTop3StationsPlusChaudes();
+    }
+
+    @Override
+    public List<StationMeteo> getAllStationMeteo() {
+        return List.of();
+    }
+
+    @Override
+    public StationMeteo getStationMeteoByName(String stationName) {
+        StationMeteo stationMeteo;
+        stationMeteo = stationMeteoDAO.getStationMeteoByName(stationName);
+        if(stationMeteo == null) {
+           throw new NullPointerException("Aucune station n'existe avec le nom: "+stationName);
+        }
+        return stationMeteo;
+    }
+
+    @Override
+    public void updateStationMeteo(StationMeteo station, Meteo newMeteo) {
+        stationMeteoDAO.updateStationMeteo(station, newMeteo);
+    }
+
 
     private void saveAll(StationMeteo stationMeteo){
         Pays pays = stationMeteo.getPays();

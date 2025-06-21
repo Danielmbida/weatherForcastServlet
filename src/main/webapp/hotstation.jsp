@@ -12,39 +12,7 @@
   <link href="https://cdn.jsdelivr.net/npm/bootswatch@5.3.2/dist/minty/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
 
-  <style>
-    .card {
-      border-radius: 15px !important;
-    }
-
-    .card:hover {
-      transform: translateY(-5px);
-      transition: all 0.3s ease;
-    }
-
-    .btn {
-      border-radius: 10px !important;
-    }
-
-    .btn:hover {
-      transform: translateY(-2px);
-      transition: all 0.3s ease;
-    }
-
-    .modal-content {
-      border-radius: 15px !important;
-    }
-
-    .alert {
-      border-radius: 10px !important;
-    }
-
-    .navbar {
-      position: sticky;
-      top: 0;
-      z-index: 1030;
-    }
-  </style>
+  <%@ include file="stylesheet/hotStation.css" %>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow">

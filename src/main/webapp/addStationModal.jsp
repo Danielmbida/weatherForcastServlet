@@ -1,6 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
-<!-- Modal d'ajout de station -->
 <div class="modal fade" id="addStationModal" tabindex="-1" aria-labelledby="addStationModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content border-0 shadow-lg">
@@ -16,6 +15,30 @@
                         <i class="bi bi-info-circle-fill me-2 text-info"></i>
                         <strong>Information :</strong> Entrez les coordonnées géographiques de la nouvelle station.
                     </div>
+                    <% if (session.getAttribute("error") != null || session.getAttribute("success") != null || session.getAttribute("existed") != null) { %>
+                    <div class="w-100 mt-3">
+                        <% if (session.getAttribute("error") != null) { %>
+                        <div class="alert alert-danger mb-0">
+                            <i class="bi bi-x-circle-fill me-2"></i>
+                            <%= session.getAttribute("error") %>
+                        </div>
+                        <% session.removeAttribute("error"); %>
+                        <% } else if (session.getAttribute("existed") != null) { %>
+                        <div class="alert alert-warning mb-0">
+                            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                            <%= session.getAttribute("existed") %>
+                        </div>
+                        <% session.removeAttribute("existed"); %>
+                        <% } else if (session.getAttribute("success") != null) { %>
+                        <div class="alert alert-success mb-0">
+                            <i class="bi bi-check-circle-fill me-2"></i>
+                            <%= session.getAttribute("success") %>
+                        </div>
+                        <% session.removeAttribute("success"); %>
+                        <% } %>
+                    </div>
+                    <% } %>
+
 
                     <div class="row g-4">
                         <div class="col-md-6">

@@ -19,19 +19,10 @@ public class StationMeteoDAO {
     private OraclePreparedStatement pstmt;
     private ResultSet rs;
 
-    Random rand = new Random();
-
     public Integer createStationMeteo(StationMeteo stationMeteo) {
         Integer id = null;
         try {
             con = DatabaseManager.getConnection();
-//            if (stationMeteo.getOpenWeatherMapId() == 0) {
-//                int owmId = 10000 + rand.nextInt(10001);
-//                while (checkOwmId(owmId)) {
-//                    owmId = 10000 + rand.nextInt(10001);
-//                }
-//                stationMeteo.setOpenWeatherMapId(owmId);
-//            }
             String SELECT_SQL = "select * from STATIONMETEOS where OWM_ID = ?";
             pstmt = (OraclePreparedStatement) con.prepareStatement(SELECT_SQL);
             pstmt.setInt(1,stationMeteo.getOpenWeatherMapId());
@@ -74,18 +65,6 @@ public class StationMeteoDAO {
             throw new RuntimeException(e);
         }
         return id;
-    }
-
-    private boolean checkOwmId(int number){
-        try {
-            con = DatabaseManager.getConnection();
-            pstmt = (OraclePreparedStatement) con.prepareStatement("SELECT OWM_ID FROM STATIONMETEOS where OWM_ID = ?");
-            pstmt.setInt(1, number);
-            rs = pstmt.executeQuery();
-            return rs.next();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     public StationMeteo getStationByLCoords(double lat, double lon){
@@ -179,7 +158,6 @@ public class StationMeteoDAO {
         ORDER BY m.TEMPERATURE DESC
         FETCH FIRST 3 ROWS ONLY
     """;
-
         try {
             con = DatabaseManager.getConnection();
             pstmt = (OraclePreparedStatement) con.prepareStatement(sql);

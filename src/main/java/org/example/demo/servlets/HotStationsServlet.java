@@ -16,9 +16,8 @@ import java.util.List;
 public class HotStationsServlet extends HttpServlet  {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, IOException {
         StationMeteoService stationMeteoService = new StationMeteoService();
-        StationMeteoDAO stationMeteoDAO = new StationMeteoDAO();
         try {
-            List<StationMeteo> topStations = stationMeteoDAO.getTop3StationsPlusChaudes();
+            List<StationMeteo> topStations = stationMeteoService.getTop3StationsPlusChaudes();
             request.setAttribute("topHotStations", topStations);
             request.getRequestDispatcher("/hotstation.jsp").forward(request, response);
         } catch (Exception e) {

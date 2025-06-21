@@ -6,13 +6,14 @@ import org.example.demo.business.Meteo;
 import org.example.demo.business.StationMeteo;
 import org.example.demo.database.StationMeteoDAO;
 import org.example.demo.service.ApiClass;
+import org.example.demo.service.StationMeteoService;
 
 import java.io.IOException;
 import java.util.List;
 
 @WebServlet(name = "refreshAllStationsServlet", value = "/refresh-all-stations")
 public class RefreshAllStationServlet extends HttpServlet {
-    private final StationMeteoDAO stationMeteoDAO = new StationMeteoDAO();
+    StationMeteoService stationMeteoService = new StationMeteoService();
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -21,7 +22,7 @@ public class RefreshAllStationServlet extends HttpServlet {
             redirectUrl = "index.jsp";
         }
         try {
-            List<StationMeteo> stations = stationMeteoDAO.getAllStationMeteo();
+            List<StationMeteo> stations = stationMeteoService.getAllStationMeteo();
 
             for (StationMeteo station : stations) {
                 try {
@@ -29,15 +30,15 @@ public class RefreshAllStationServlet extends HttpServlet {
                             station.getLatitude(),
                             station.getLongitude()
                     );
-                    stationMeteoDAO.updateStationMeteo(station, newMeteo);
+                    stationMeteoService.updateStationMeteo(station, newMeteo);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
-            request.getSession().setAttribute("success", "Toutes les stations ont été rafraîchies avec succès.");
+            request.getSession().setAttribute("refresh", "Toutes les stations ont été rafraîchies avec succès.");
         } catch (Exception e) {
             e.printStackTrace();
-            request.getSession().setAttribute("error", "Erreur lors du rafraîchissement des stations : " + e.getMessage());
+            request.getSession().setAttribute("errorRefresh", "Erreur lors du rafraîchissement des stations : " + e.getMessage());
         }
 
         response.sendRedirect(redirectUrl);

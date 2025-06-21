@@ -7,13 +7,14 @@ import org.example.demo.business.Meteo;
 import org.example.demo.database.StationMeteoDAO;
 import org.example.demo.service.ApiClass;
 import jakarta.servlet.http.*;
+import org.example.demo.service.StationMeteoService;
 
 import java.io.IOException;
 import java.util.List;
 
 @WebServlet(name = "stationDetailsServlet", value = "/station-details")
 public class StationDetailsServlet extends HttpServlet {
-    StationMeteoDAO stationMeteoDAO = new StationMeteoDAO();
+    StationMeteoService stationMeteoService = new StationMeteoService();
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String stationName = request.getParameter("name");
@@ -24,7 +25,7 @@ public class StationDetailsServlet extends HttpServlet {
         }
 
         try {
-            StationMeteo station = stationMeteoDAO.getStationMeteoByName(stationName);
+            StationMeteo station = stationMeteoService.getStationMeteoByName(stationName);
 
             if (station == null) {
                 request.setAttribute("errorMessage", "Station non trouvée: " + stationName);
@@ -82,14 +83,14 @@ public class StationDetailsServlet extends HttpServlet {
 
         if ("refresh".equals(action) && stationName != null) {
             try {
-                StationMeteo station = stationMeteoDAO.getStationMeteoByName(stationName);
+                StationMeteo station = stationMeteoService.getStationMeteoByName(stationName);
                 if (station != null) {
                     Meteo newMeteo = ApiClass.fetchMeteo(
                             station.getLatitude(),
                             station.getLongitude()
                     );
 
-                    stationMeteoDAO.updateStationMeteo(station, newMeteo);
+                    stationMeteoService.updateStationMeteo(station, newMeteo);
 
                     request.getSession().setAttribute("successMessage", "Données météo mises à jour avec succès");
                 }

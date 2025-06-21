@@ -1,6 +1,5 @@
 <%@ page import="org.example.demo.business.StationMeteo" %>
 <%@ page import="org.example.demo.business.Meteo" %>
-<%@ page import="org.example.demo.business.Pays" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Map" %>
 <%@ page import="java.util.Date" %>
@@ -43,72 +42,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootswatch@5.3.2/dist/minty/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
 
-    <style>
-        .card {
-            border-radius: 15px !important;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-            transition: all 0.3s ease;
-        }
-
-        .btn {
-            border-radius: 10px !important;
-        }
-
-        .btn:hover {
-            transform: translateY(-2px);
-            transition: all 0.3s ease;
-        }
-
-        .alert {
-            border-radius: 10px !important;
-        }
-
-        .navbar {
-            position: sticky;
-            top: 0;
-            z-index: 1030;
-        }
-
-        .weather-main-card {
-            background: linear-gradient(135deg, #78C2AD, #5FB3A3);
-            color: white;
-            border: none;
-        }
-
-        .forecast-card {
-            background: #f8f9fa;
-            border: 1px solid #dee2e6;
-            transition: all 0.3s ease;
-        }
-
-        .forecast-card:hover {
-            background: white;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-
-        .temp-big {
-            font-size: 3rem;
-            font-weight: 300;
-            margin: 0;
-        }
-
-        .breadcrumb {
-            background: none;
-            padding: 0;
-        }
-
-        .breadcrumb-item a {
-            text-decoration: none;
-            color: #78C2AD;
-        }
-
-        .breadcrumb-item a:hover {
-            color: #5FB3A3;
-        }
-    </style>
+    <%@ include file="stylesheet/detail.css" %>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow">

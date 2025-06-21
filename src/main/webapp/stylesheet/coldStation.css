@@ -1,0 +1,31 @@
+.card {
+    border-radius: 15px !important;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    transition: all 0.3s ease;
+}
+
+.btn {
+    border-radius: 10px !important;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    transition: all 0.3s ease;
+}
+
+.modal-content {
+    border-radius: 15px !important;
+}
+
+.alert {
+    border-radius: 10px !important;
+}
+
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 1030;
+}

@@ -9,45 +9,50 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WeatherStation Pro - Stations Météo</title>
 
-    <!-- Bootswatch MINTY Theme -->
     <link href="https://cdn.jsdelivr.net/npm/bootswatch@5.3.2/dist/minty/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
 
-    <style>
-        .card {
-            border-radius: 15px !important;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-            transition: all 0.3s ease;
-        }
-
-        .btn {
-            border-radius: 10px !important;
-        }
-
-        .btn:hover {
-            transform: translateY(-2px);
-            transition: all 0.3s ease;
-        }
-
-        .modal-content {
-            border-radius: 15px !important;
-        }
-
-        .alert {
-            border-radius: 10px !important;
-        }
-
-        .navbar {
-            position: sticky;
-            top: 0;
-            z-index: 1030;
-        }
-    </style>
+    <link href="stylesheet/index.css">
 </head>
-<body>
+<script src="js/stationFilter.js"></script>
+<% if (session.getAttribute("refresh") != null) { %>
+<div class="alert alert-success mb-0">
+    <i class="bi bi-x-circle-fill me-2"></i>
+    <%= session.getAttribute("refresh") %>
+</div>
+<% session.removeAttribute("refresh"); %>
+<% } else if (session.getAttribute("errorRefresh") != null) { %>
+<div class="alert alert-danger mb-0">
+    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+    <%= session.getAttribute("errorRefresh") %>
+</div>
+<% session.removeAttribute("errorRefresh"); %>
+<% } %>
+<%
+    boolean openModal = session.getAttribute("error") != null
+            || session.getAttribute("existed") != null
+            || session.getAttribute("success") != null;
+%>
+<body<%= openModal ? " data-open-modal='true'" : "" %>>
+<%--<% if (session.getAttribute("error") != null) { %>--%>
+<%--<div class="alert alert-danger alert-dismissible fade show" role="alert">--%>
+<%--    <%= session.getAttribute("error") %>--%>
+<%--    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>--%>
+<%--</div>--%>
+<%--<% session.removeAttribute("error"); %>--%>
+<%--<% } else if (session.getAttribute("existed") != null) { %>--%>
+<%--<div class="alert alert-warning alert-dismissible fade show" role="alert">--%>
+<%--    <%= session.getAttribute("existed") %>--%>
+<%--    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>--%>
+<%--</div>--%>
+<%--<% session.removeAttribute("existed"); %>--%>
+<%--<% } else if (session.getAttribute("success") != null) { %>--%>
+<%--<div class="alert alert-success alert-dismissible fade show" role="alert">--%>
+<%--    <%= session.getAttribute("success") %>--%>
+<%--    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>--%>
+<%--</div>--%>
+<%--<% session.removeAttribute("success"); %>--%>
+<%--<% } %>--%>
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow">
     <div class="container">
         <a class="navbar-brand fw-bold" href="index.jsp">
@@ -108,19 +113,7 @@
 </div>
 
 <div class="container my-5">
-    <% if (request.getAttribute("error") != null) { %>
-    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        <i class="bi bi-exclamation-triangle-fill me-2"></i>
-        <%= request.getAttribute("error") %>
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-    </div>
-    <% } else if (request.getAttribute("success") != null) { %>
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        <i class="bi bi-check-circle-fill me-2"></i>
-        <%= request.getAttribute("success") %>
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-    </div>
-    <% } %>
+
 
     <%
         StationMeteoDAO dao = new StationMeteoDAO();
@@ -210,7 +203,21 @@
             <h2 class="display-6">Toutes les stations météo</h2>
             <p class="text-muted">Gérez et consultez toutes vos stations</p>
         </div>
+        <div class="col-md-6 mx-auto mb-4">
+            <div class="input-group input-group-lg">
+        <span class="input-group-text bg-white border-primary text-primary">
+            <i class="bi bi-search"></i>
+        </span>
+                <input type="text" id="searchInput" class="form-control border-primary shadow-sm"
+                       placeholder="Rechercher une station par son nom...">
+            </div>
+        </div>
+
     </div>
+    <div class="row mb-3 text-start">
+
+    </div>
+
 
     <div class="row g-4">
         <% if (!stationMeteoList.isEmpty()) {
@@ -228,7 +235,8 @@
 
                 String badgeClass = "bg-light text-dark";
         %>
-        <div class="col-lg-4 col-md-6">
+        <div class="col-lg-4 col-md-6 station-card"
+             data-name="<%= station.getNom().toLowerCase() %>">
             <div class="card h-100">
                 <div class="card-header bg-primary text-white">
                     <div class="d-flex justify-content-between align-items-center">
@@ -320,15 +328,5 @@
 <%@ include file="addStationModal.jsp" %>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
-<script>
-    setTimeout(function() {
-        var alerts = document.querySelectorAll('.alert');
-        alerts.forEach(function(alert) {
-            var bsAlert = new bootstrap.Alert(alert);
-            bsAlert.close();
-        });
-    }, 5000);
-</script>
 </body>
 </html>
