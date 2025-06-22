@@ -22,7 +22,7 @@ public class RefreshAllStationServlet extends HttpServlet {
         }
         try {
             List<StationMeteo> stations = stationMeteoService.getAllStationMeteo();
-
+            System.out.println(stations);
             for (StationMeteo station : stations) {
                 try {
                     Meteo newMeteo = ApiClass.fetchMeteo(
@@ -39,7 +39,6 @@ public class RefreshAllStationServlet extends HttpServlet {
             e.printStackTrace();
             request.getSession().setAttribute("errorRefresh", "Erreur lors du rafraîchissement des stations : " + e.getMessage());
         }
-
         response.sendRedirect(redirectUrl);
     }
 }

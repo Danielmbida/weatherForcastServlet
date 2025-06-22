@@ -12,6 +12,6 @@ public interface IStationMeteoService  {
     List<StationMeteo> getTop3StationsPlusFroide();
     List<StationMeteo> getTop3StationsPlusChaudes();
     List<StationMeteo> getAllStationMeteo();
-    StationMeteo getStationMeteoByName(String stationName);
+    StationMeteo getStationMeteoById(int OpenWeatherID);
     void updateStationMeteo(StationMeteo station, Meteo newMeteo);
 }

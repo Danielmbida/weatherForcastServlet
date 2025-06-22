@@ -35,25 +35,6 @@
             || session.getAttribute("success") != null;
 %>
 <body<%= openModal ? " data-open-modal='true'" : "" %>>
-<%--<% if (session.getAttribute("error") != null) { %>--%>
-<%--<div class="alert alert-danger alert-dismissible fade show" role="alert">--%>
-<%--    <%= session.getAttribute("error") %>--%>
-<%--    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>--%>
-<%--</div>--%>
-<%--<% session.removeAttribute("error"); %>--%>
-<%--<% } else if (session.getAttribute("existed") != null) { %>--%>
-<%--<div class="alert alert-warning alert-dismissible fade show" role="alert">--%>
-<%--    <%= session.getAttribute("existed") %>--%>
-<%--    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>--%>
-<%--</div>--%>
-<%--<% session.removeAttribute("existed"); %>--%>
-<%--<% } else if (session.getAttribute("success") != null) { %>--%>
-<%--<div class="alert alert-success alert-dismissible fade show" role="alert">--%>
-<%--    <%= session.getAttribute("success") %>--%>
-<%--    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>--%>
-<%--</div>--%>
-<%--<% session.removeAttribute("success"); %>--%>
-<%--<% } %>--%>
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow">
     <div class="container">
         <a class="navbar-brand fw-bold" href="index.jsp">
@@ -330,7 +311,7 @@
 
                 <div class="card-footer">
                     <div class="d-grid">
-                        <a href="station-details?name=<%= station.getNom() %>"
+                        <a href="station-details?owmid=<%= station.getOpenWeatherMapId() %>"
                            class="btn btn-primary">
                             <i class="bi bi-eye me-2"></i>Voir les détails
                         </a>

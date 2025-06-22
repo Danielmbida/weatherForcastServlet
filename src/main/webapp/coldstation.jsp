@@ -215,7 +215,7 @@
 
                 <div class="card-footer">
                     <div class="d-grid">
-                        <a href="station-details?name=<%= station.getNom() %>"
+                        <a href="station-details?owmid=<%= station.getOpenWeatherMapId() %>"
                            class="btn btn-primary">
                             <i class="bi bi-eye me-2"></i>Voir les détails
                         </a>

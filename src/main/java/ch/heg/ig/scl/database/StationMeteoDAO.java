@@ -80,12 +80,12 @@ public class StationMeteoDAO {
         }
         return stationMeteo;
     }
-    public StationMeteo getStationMeteoByName(String stationName){
+    public StationMeteo getStationByOpenWeatherMapId(int openWeatherID){
         StationMeteo stationMeteo;
         try {
             con = DatabaseManager.getConnection();
-            pstmt = (OraclePreparedStatement) con.prepareStatement("SELECT * FROM STATIONMETEOS WHERE upper(NOM) = ?");
-            pstmt.setString(1, stationName.trim().toUpperCase());
+            pstmt = (OraclePreparedStatement) con.prepareStatement("SELECT * FROM STATIONMETEOS WHERE owm_id = ?");
+            pstmt.setInt(1, openWeatherID);
             stationMeteo = getStationMeteo(con, pstmt);
             rs.close();
             con.close();

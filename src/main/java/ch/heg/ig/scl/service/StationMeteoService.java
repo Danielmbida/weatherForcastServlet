@@ -40,15 +40,15 @@ public class StationMeteoService  implements IStationMeteoService{
 
     @Override
     public List<StationMeteo> getAllStationMeteo() {
-        return List.of();
+        return  stationMeteoDAO.getAllStationMeteo();
     }
 
     @Override
-    public StationMeteo getStationMeteoByName(String stationName) {
+    public StationMeteo getStationMeteoById(int OpenWeatherID) {
         StationMeteo stationMeteo;
-        stationMeteo = stationMeteoDAO.getStationMeteoByName(stationName);
+        stationMeteo = stationMeteoDAO.getStationByOpenWeatherMapId(OpenWeatherID);
         if(stationMeteo == null) {
-           throw new NullPointerException("Aucune station n'existe avec le nom: "+stationName);
+           throw new NullPointerException("Aucune station n'existe dans la base avec l'id: "+ OpenWeatherID);
         }
         return stationMeteo;
     }

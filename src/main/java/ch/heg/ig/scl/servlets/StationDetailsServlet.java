@@ -16,19 +16,19 @@ public class StationDetailsServlet extends HttpServlet {
     StationMeteoService stationMeteoService = new StationMeteoService();
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        String stationName = request.getParameter("name");
 
-        if (stationName == null || stationName.trim().isEmpty()) {
+        int stationID = Integer.parseInt(request.getParameter("owmid"));
+
+        if (stationID == 0) {
             response.sendRedirect("index.jsp");
             return;
         }
 
         try {
-            StationMeteo station = stationMeteoService.getStationMeteoByName(stationName);
+            StationMeteo station = stationMeteoService.getStationMeteoById(stationID);
 
             if (station == null) {
-                request.setAttribute("errorMessage", "Station non trouvée: " + stationName);
-                request.getRequestDispatcher("/error.jsp").forward(request, response);
+                request.setAttribute("errorMessage", "Station non trouvée id: " + stationID);
                 return;
             }
 
@@ -78,11 +78,11 @@ public class StationDetailsServlet extends HttpServlet {
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String action = request.getParameter("action");
-        String stationName = request.getParameter("stationName");
+        int stationID = Integer.parseInt(request.getParameter("owmid"));
 
-        if ("refresh".equals(action) && stationName != null) {
+        if ("refresh".equals(action) && stationID != 0) {
             try {
-                StationMeteo station = stationMeteoService.getStationMeteoByName(stationName);
+                StationMeteo station = stationMeteoService.getStationMeteoById(stationID);
                 if (station != null) {
                     Meteo newMeteo = ApiClass.fetchMeteo(
                             station.getLatitude(),
@@ -98,7 +98,7 @@ public class StationDetailsServlet extends HttpServlet {
                 request.getSession().setAttribute("errorMessage", "Erreur lors de la mise à jour des données: " + e.getMessage());
             }
 
-            response.sendRedirect("station-details?name=" + stationName);
+            response.sendRedirect("station-details?owmid=" + stationID);
         } else {
             doGet(request, response);
         }
