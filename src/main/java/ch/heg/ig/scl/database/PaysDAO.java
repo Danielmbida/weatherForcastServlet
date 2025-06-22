@@ -1,8 +1,8 @@
-package org.example.demo.database;
+package ch.heg.ig.scl.database;
 
 
 
-import org.example.demo.business.Pays;
+import ch.heg.ig.scl.business.Pays;
 import oracle.jdbc.OraclePreparedStatement;
 
 import java.sql.Connection;

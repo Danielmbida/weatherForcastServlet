@@ -1,6 +1,7 @@
-package org.example.demo.database;
+package ch.heg.ig.scl.database;
 
-import org.example.demo.business.*;
+
+import ch.heg.ig.scl.business.*;
 import oracle.jdbc.OraclePreparedStatement;
 import oracle.jdbc.OracleTypes;
 
@@ -9,7 +10,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class StationMeteoDAO {
 

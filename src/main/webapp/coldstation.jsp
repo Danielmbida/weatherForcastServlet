@@ -1,5 +1,6 @@
 <%@ page import="java.util.List" %>
-<%@ page import="org.example.demo.business.StationMeteo" %>
+<%@ page import="ch.heg.ig.scl.business.StationMeteo" %>
+<%@ page import="ch.heg.ig.scl.business.Meteo" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="fr">
@@ -132,7 +133,7 @@
                 int rang = 1;
                 for (StationMeteo station : stations) {
                     java.util.Date lastDate = null;
-                    org.example.demo.business.Meteo lastMeteo = null;
+                    Meteo lastMeteo = null;
                     if (station.getDonneesMeteo() != null) {
                         for (var entry : station.getDonneesMeteo().entrySet()) {
                             if (lastDate == null || entry.getKey().after(lastDate)) {

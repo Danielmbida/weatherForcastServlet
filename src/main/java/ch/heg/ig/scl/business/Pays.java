@@ -1,9 +1,9 @@
-package org.example.demo.business;
+package ch.heg.ig.scl.business;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import org.example.demo.deserializer.PaysDeserializer;
+import ch.heg.ig.scl.deserializer.PaysDeserializer;
 
 import java.io.Serializable;
 

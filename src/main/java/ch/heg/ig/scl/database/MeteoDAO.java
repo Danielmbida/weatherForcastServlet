@@ -1,11 +1,12 @@
-package org.example.demo.database;
+package ch.heg.ig.scl.database;
 
 
 
-import org.example.demo.business.*;
-import org.example.demo.service.ApiClass;
+
+import ch.heg.ig.scl.business.*;
+import ch.heg.ig.scl.service.ApiClass;
 import oracle.jdbc.OraclePreparedStatement;
-import org.example.demo.business.Meteo;
+import ch.heg.ig.scl.business.Meteo;
 
 import java.io.IOException;
 import java.sql.Connection;

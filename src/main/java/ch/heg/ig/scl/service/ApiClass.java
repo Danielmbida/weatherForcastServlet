@@ -1,8 +1,9 @@
-package org.example.demo.service;
+package ch.heg.ig.scl.service;
+
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.example.demo.business.*;
+import ch.heg.ig.scl.business.*;
 
 import java.io.IOException;
 import java.net.URI;
@@ -10,7 +11,6 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class ApiClass {

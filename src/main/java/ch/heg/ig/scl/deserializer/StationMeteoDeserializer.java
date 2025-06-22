@@ -1,7 +1,8 @@
-package org.example.demo.deserializer;
+package ch.heg.ig.scl.deserializer;
 
-import org.example.demo.business.*;
-import  org.example.demo.service.*;
+
+import ch.heg.ig.scl.business.*;
+import ch.heg.ig.scl.service.*;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;

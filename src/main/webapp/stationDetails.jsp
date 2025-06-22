@@ -1,5 +1,5 @@
-<%@ page import="org.example.demo.business.StationMeteo" %>
-<%@ page import="org.example.demo.business.Meteo" %>
+<%@ page import="ch.heg.ig.scl.business.StationMeteo" %>
+<%@ page import="ch.heg.ig.scl.business.Meteo" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Map" %>
 <%@ page import="java.util.Date" %>
@@ -132,6 +132,12 @@
                                     <p class="mb-2 opacity-90">
                                         <i class="bi bi-geo-alt me-2"></i>
                                         <strong>Position :</strong> <%= decimalFormat.format(station.getLatitude()) %>°N, <%= decimalFormat.format(station.getLongitude()) %>°E
+                                    </p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p class="mb-2 opacity-90">
+                                        <i class="bi bi-key me-2"></i>
+                                        <strong>ID OpenWeather :</strong> <%= station.getOpenWeatherMapId() %>
                                     </p>
                                 </div>
                             </div>

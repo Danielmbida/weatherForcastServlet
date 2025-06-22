@@ -29,3 +29,21 @@
     top: 0;
     z-index: 1030;
 }
+
+.filter-btn.active {
+    background-color: var(--bs-primary) !important;
+    color: white !important;
+    border-color: var(--bs-primary) !important;
+}
+
+.station-card {
+    transition: all 0.3s ease;
+}
+
+.station-card[style*="none"] {
+    display: none !important;
+}
+
+.filter-btn {
+    transition: all 0.2s ease;
+}

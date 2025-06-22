@@ -1,6 +1,7 @@
 <%@ page import="java.util.List" %>
-<%@ page import="org.example.demo.business.StationMeteo" %>
-<%@ page import="org.example.demo.database.StationMeteoDAO" %>
+<%@ page import="ch.heg.ig.scl.business.StationMeteo" %>
+<%@ page import="ch.heg.ig.scl.database.StationMeteoDAO" %>
+<%@ page import="ch.heg.ig.scl.business.Meteo" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="fr">
@@ -203,19 +204,39 @@
             <h2 class="display-6">Toutes les stations météo</h2>
             <p class="text-muted">Gérez et consultez toutes vos stations</p>
         </div>
-        <div class="col-md-6 mx-auto mb-4">
-            <div class="input-group input-group-lg">
+        <div class="col-md-8 mx-auto mb-4">
+            <div class="input-group input-group-lg mb-3">
         <span class="input-group-text bg-white border-primary text-primary">
             <i class="bi bi-search"></i>
         </span>
                 <input type="text" id="searchInput" class="form-control border-primary shadow-sm"
-                       placeholder="Rechercher une station par son nom...">
+                       placeholder="Rechercher par nom, pays, ID ou température...">
+            </div>
+
+            <!-- Filtres rapides -->
+            <div class="d-flex justify-content-center gap-2 flex-wrap">
+                <button class="btn btn-outline-primary btn-sm filter-btn" data-filter="all">
+                    <i class="bi bi-grid me-1"></i>Toutes
+                </button>
+                <button class="btn btn-outline-danger btn-sm filter-btn" data-filter="hot">
+                    <i class="bi bi-thermometer-high me-1"></i>Chaudes (>25°C)
+                </button>
+                <button class="btn btn-outline-info btn-sm filter-btn" data-filter="cold">
+                    <i class="bi bi-thermometer-low me-1"></i>Froides (<10°C)
+                </button>
             </div>
         </div>
-
+    </div>
+    <div id="noResults" class="row mb-4" style="display: none;">
+        <div class="col-12 text-center">
+            <div class="alert alert-info">
+                <i class="bi bi-search me-2"></i>
+                <strong>Aucune station trouvée</strong><br>
+                <small>Essayez de modifier vos critères de recherche</small>
+            </div>
+        </div>
     </div>
     <div class="row mb-3 text-start">
-
     </div>
 
 
@@ -223,7 +244,7 @@
         <% if (!stationMeteoList.isEmpty()) {
             for (StationMeteo station : stationMeteoList) {
                 java.util.Date lastDate = null;
-                org.example.demo.business.Meteo lastMeteo = null;
+                Meteo lastMeteo = null;
                 if (station.getDonneesMeteo() != null) {
                     for (var entry : station.getDonneesMeteo().entrySet()) {
                         if (lastDate == null || entry.getKey().after(lastDate)) {
@@ -236,7 +257,11 @@
                 String badgeClass = "bg-light text-dark";
         %>
         <div class="col-lg-4 col-md-6 station-card"
-             data-name="<%= station.getNom().toLowerCase() %>">
+             data-name="<%= station.getNom().toLowerCase() %>"
+             data-country="<%= station.getPays().getNom().toLowerCase() %>"
+             data-id="<%= station.getOpenWeatherMapId() %>"
+             data-temp="<%= lastMeteo != null ? String.format("%.1f", lastMeteo.getTemperature()) : "0" %>"
+             data-has-data="<%= lastMeteo != null ? "true" : "false" %>">
             <div class="card h-100">
                 <div class="card-header bg-primary text-white">
                     <div class="d-flex justify-content-between align-items-center">
@@ -290,6 +315,15 @@
                         <div class="col-6">
                             <i class="bi bi-globe2 text-success me-1"></i>
                             Lng: <%= String.format("%.3f", station.getLongitude()) %>°
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <div class="row g-2 text-muted small">
+                        <div class="col-12">
+                            <i class="bi bi-key text-warning me-1"></i>
+                            ID OpenWeather: <%= station.getOpenWeatherMapId() %>
                         </div>
                     </div>
                 </div>

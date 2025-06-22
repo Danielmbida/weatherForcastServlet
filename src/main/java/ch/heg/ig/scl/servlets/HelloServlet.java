@@ -1,4 +1,4 @@
-package org.example.demo.servlets;
+package ch.heg.ig.scl.servlets;
 
 import java.io.*;
 

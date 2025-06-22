@@ -1,11 +1,9 @@
-package org.example.demo.service;
+package ch.heg.ig.scl.service;
 
 
-import org.example.demo.business.*;
 
-import java.io.IOException;
-import java.rmi.RemoteException;
-import java.sql.SQLException;
+import ch.heg.ig.scl.business.*;
+
 import java.util.List;
 
 public interface IStationMeteoService  {

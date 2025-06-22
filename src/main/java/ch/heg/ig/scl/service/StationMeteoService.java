@@ -1,9 +1,9 @@
-package org.example.demo.service;
+package ch.heg.ig.scl.service;
 
 
-import org.example.demo.business.*;
-import org.example.demo.database.*;
-import java.io.IOException;
+import ch.heg.ig.scl.business.*;
+import ch.heg.ig.scl.database.*;
+
 import java.util.List;
 
 public class StationMeteoService  implements IStationMeteoService{

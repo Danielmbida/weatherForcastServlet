@@ -1,8 +1,8 @@
-package org.example.demo.business;
+package ch.heg.ig.scl.business;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import org.example.demo.deserializer.MeteoDeserializer_Jackson;
+import ch.heg.ig.scl.deserializer.MeteoDeserializer_Jackson;
 
 import java.io.Serializable;
 import java.util.Date;

@@ -1,4 +1,4 @@
-package org.example.demo.database;
+package ch.heg.ig.scl.database;
 
 import oracle.jdbc.pool.OracleDataSource;
 

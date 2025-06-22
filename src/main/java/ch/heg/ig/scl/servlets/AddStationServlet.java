@@ -1,10 +1,10 @@
-package org.example.demo.servlets;
+package ch.heg.ig.scl.servlets;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.WebServlet;
-import org.example.demo.business.StationMeteo;
-import org.example.demo.service.StationMeteoService;
+import ch.heg.ig.scl.business.StationMeteo;
+import ch.heg.ig.scl.service.StationMeteoService;
 import java.io.IOException;
 
 @WebServlet(name = "addStationServlet", value = "/add-station")
